@@ -3,7 +3,6 @@ import { pool } from "../dbconnection";
 
 // Create a customer
 export function createANewCustomer(req: Request, res: Response, next: NextFunction): void {
-    console.log(req.body);
     const { storeId, firstname, lastname, email, addressId, active, createDate, lastUpdate } = req.body;
     const insertCustomerQuery: string = `
         INSERT INTO customer(customer_id,store_id,first_name,last_name,email,address_id,active,create_date,last_update)
@@ -20,8 +19,10 @@ export function createANewCustomer(req: Request, res: Response, next: NextFuncti
         lastUpdate,
     ])
         // .then((result) => res.status(200).json({ message: "Registered customer", result }))
-        .then(result => console.log(result))
+        .then((result) => console.log(result))
         .catch((error: Error) => res.status(500).json({ message: error.message, stack: error.stack }));
+
+    pool.end();
 }
 
 // Read all customers
@@ -33,4 +34,21 @@ export function readAllCustomer(req: Request, res: Response, next: NextFunction)
                 : res.status(200).send(rows)
         )
         .catch((err) => res.status(err.status || 500).json({ message: err.message }));
+
+    pool.end();
+}
+
+// Delete customer by id
+export function deleteCustomerById(req: Request, res: Response, next: NextFunction): void {
+    const customerId: string = req.params.id;
+    const deleteCustomerQuery: string = `
+        DELETE FROM customer
+        WHERE customer_id = ?
+    `;
+    pool.query(deleteCustomerQuery, [customerId])
+        .then(console.log)
+        .then(() => res.status(200).json({ message: "Deleted customer" }))
+        .catch((error: Error) => res.status(500).json({ message: error.message }));
+
+    pool.end();
 }
