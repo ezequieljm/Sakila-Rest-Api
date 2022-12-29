@@ -4,7 +4,7 @@ This is a simple project made in *nodejs* using the framework *expressjs*, *mari
 You can run it with the following commands. You must installed git and npm.
 
 ```C 
-$ git clone https://github.com/ezequieljm/Nodejs-mariadb-rest-api.git ; npm install
+$ git clone https://github.com/ezequieljm/Sakila-Rest-Api.git ; npm install
 ```
 
 Now you'll should first compile it and then run the server.
