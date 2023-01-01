@@ -36,7 +36,7 @@ export function readAllCustomer(req: Request, res: Response, next: NextFunction)
 }
 
 //Update customer by id
-export function updateCustomerById(req: Request, res: Response, next: NextFunction) {
+export function updateCustomerById(req: Request, res: Response, next: NextFunction): void {
     const customerId: string = req.params.id;
     const { storeId, firstname, lastname, email, addressId, active, createDate, lastUpdate } = req.body;
     const updateCustomerQuery: string = `
