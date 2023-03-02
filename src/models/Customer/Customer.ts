@@ -40,6 +40,7 @@ class Customer implements ICustomer {
         this.createDate = createDate;
         this.lastUpdate = lastUpdate;
     }
+
 }
 
 export default Customer;
