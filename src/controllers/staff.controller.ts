@@ -59,3 +59,5 @@ export function readAllStaff(req: Request, res: Response, next: NextFunction): v
         )
         .catch((err) => res.status(err.status || 500).json({ message: err.message }));
 }
+
+export function theNewTestFunction() {}
