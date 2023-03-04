@@ -15,4 +15,5 @@ export const pool: mariadb.Pool = mariadb.createPool({
     password: DB_PASSWORD,
     database: DB_DATABASE,
     port: DB_PORT,
+    // multipleStatements:true
 });

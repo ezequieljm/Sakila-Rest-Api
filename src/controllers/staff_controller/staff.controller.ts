@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { pool } from "../dbconnection";
+import { pool } from "../../dbconnection";
 
 // Create a customer
 export function createANewStaff(req: Request, res: Response, next: NextFunction): void {
@@ -60,4 +60,3 @@ export function readAllStaff(req: Request, res: Response, next: NextFunction): v
         .catch((err) => res.status(err.status || 500).json({ message: err.message }));
 }
 
-export function theNewTestFunction() {}

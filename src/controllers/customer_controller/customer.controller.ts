@@ -1,27 +1,48 @@
 import express, { NextFunction, Request, Response } from "express";
-import { pool } from "../dbconnection";
+import { pool } from "../../dbconnection";
+import {
+    maxValueOfTableQuery,
+    missingNumbersQuery,
+    insertNewCustomerQuery,
+    updateNewCustomer,
+} from "./querys/customerQuerys";
 
-// Create a customer
-export function createANewCustomer(req: Request, res: Response, next: NextFunction): void {
+// Register a new customer
+export function registerANewCustomer(req: Request, res: Response, next: NextFunction) {
     const { storeId, firstname, lastname, email, addressId, active, createDate, lastUpdate } = req.body;
-    const insertCustomerQuery: string = `
-        INSERT INTO customer(customer_id,store_id,first_name,last_name,email,address_id,active,create_date,last_update)
-        VALUES(DEFAULT,?,?,?,?,?,?,?,?)
-    `;
-    pool.query(insertCustomerQuery, [
-        storeId,
-        firstname,
-        lastname,
-        email,
-        addressId,
-        active,
-        createDate,
-        lastUpdate,
-    ])
-        .then((result) =>
-            res.status(200).json({ message: "Registered customer", insertedId: parseInt(result.insertId) })
-        )
-        .catch((error: Error) => res.status(500).json({ message: error.message }));
+
+    pool.query(maxValueOfTableQuery)
+        .then((value: any) => {
+            const { AUTO_INCREMENT } = value[0];
+            const maximum: number = Number(AUTO_INCREMENT);
+            pool.query(missingNumbersQuery, [maximum])
+                .then((missingNumbers: any) => {
+                    const customerId: number = Number(missingNumbers[0].seq);
+                    const newArrayCustomer = [
+                        customerId,
+                        storeId,
+                        firstname,
+                        lastname,
+                        email,
+                        addressId,
+                        active,
+                        createDate,
+                        lastUpdate,
+                    ];
+                    pool.query(insertNewCustomerQuery, newArrayCustomer)
+                        .then((result) => {
+                            console.log(result);
+                            pool.query(updateNewCustomer, [customerId, maximum])
+                                .then(console.log)
+                                .catch(console.log);
+                        })
+                        .catch((err) => console.log(err));
+                })
+                .catch((err) => console.log(err));
+        })
+        .catch((err) => res.status(500).json({ message: err.message }));
+
+    res.status(200).json({ message: "Registered customer" });
 }
 
 // Read all customers

@@ -1,16 +1,16 @@
 import { Router } from "express";
 import {
-    createANewCustomer,
+    registerANewCustomer,
     deleteCustomerById,
     readAllCustomer,
     updateCustomerById,
-} from "../controllers/customer.controller";
+} from "../controllers/customer_controller/customer.controller";
 
 const router: Router = Router();
 
 router.get("/read_all", readAllCustomer);
 
-router.post("/register", createANewCustomer);
+router.post("/register", registerANewCustomer);
 
 router.put("/update/:id", updateCustomerById);
 
